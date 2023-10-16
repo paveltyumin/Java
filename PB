@@ -1,0 +1,46 @@
+import java.util.*;
+
+public class PhoneBook {
+    public static void main(String[] args) {
+        // Создаем HashMap для хранения имени и списка телефонов
+        Map<String, List<String>> phoneBook = new HashMap<>();
+
+        // Добавляем записи в телефонную книгу
+        addContact(phoneBook, "Иван", "123-456-789");
+        addContact(phoneBook, "Петр", "987-654-321");
+        addContact(phoneBook, "Мария", "111-222-333");
+        addContact(phoneBook, "Иван", "999-000-111");
+        addContact(phoneBook, "Анна", "777-888-999");
+
+        // Выводим отсортированный список контактов
+        List<Map.Entry<String, List<String>>> sortedContacts = sortContactsByPhoneCount(phoneBook);
+        for (Map.Entry<String, List<String>> entry : sortedContacts) {
+            System.out.println("Имя: " + entry.getKey());
+            System.out.println("Телефоны: " + entry.getValue());
+        }
+    }
+
+    // Метод для добавления контакта в телефонную книгу
+    private static void addContact(Map<String, List<String>> phoneBook, String name, String phone) {
+        // Если имя уже существует, добавляем номер телефона к списку
+        if (phoneBook.containsKey(name)) {
+            List<String> phones = phoneBook.get(name);
+            phones.add(phone);
+        } else {
+            // Если имя новое, создаем новую запись
+            List<String> phones = new ArrayList<>();
+            phones.add(phone);
+            phoneBook.put(name, phones);
+        }
+    }
+
+    // Метод для сортировки контактов по убыванию числа телефонов
+    private static List<Map.Entry<String, List<String>>> sortContactsByPhoneCount(Map<String, List<String>> phoneBook) {
+        List<Map.Entry<String, List<String>>> entries = new ArrayList<>(phoneBook.entrySet());
+
+        // Сортируем записи в порядке убывания числа телефонов
+        entries.sort((entry1, entry2) -> Integer.compare(entry2.getValue().size(), entry1.getValue().size()));
+
+        return entries;
+    }
+}
